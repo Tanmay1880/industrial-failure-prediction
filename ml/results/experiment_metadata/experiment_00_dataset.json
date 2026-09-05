@@ -1,0 +1,62 @@
+{
+    "experiment_id": "experiment_00_dataset",
+    "timestamp": "2026-09-03T11:50:55.282965+05:30",
+    "dataset": {
+        "file": "D:\\Projects\\Web\\FullStack\\industrial-failure-prediction\\ml\\data\\raw\\ai4i2020.csv",
+        "sha256": "dc6630cd9b1f0f853922fad78a1b6436570d3f1ec863f1dd5c4340ac56bc8a8e",
+        "rows": 10000,
+        "columns": 14
+    },
+    "environment": {
+        "python_version": "3.14.2",
+        "pandas_version": "3.0.5",
+        "numpy_version": "2.5.2"
+    },
+    "data_quality": {
+        "total_missing_values": 0,
+        "duplicate_rows": 0
+    },
+    "target": {
+        "name": "Machine failure",
+        "normal_count": 9661,
+        "failure_count": 339,
+        "normal_percentage": 96.61,
+        "failure_percentage": 3.39
+    },
+    "feature_groups": {
+        "identifier_columns": [
+            "UDI",
+            "Product ID"
+        ],
+        "categorical_features": [
+            "Type"
+        ],
+        "numerical_features": [
+            "Air temperature [K]",
+            "Process temperature [K]",
+            "Rotational speed [rpm]",
+            "Torque [Nm]",
+            "Tool wear [min]"
+        ],
+        "failure_mode_columns": [
+            "TWF",
+            "HDF",
+            "PWF",
+            "OSF",
+            "RNF"
+        ]
+    },
+    "failure_mode_investigation": {
+        "disagreement_count": 27
+    },
+    "research_observations": [
+        "The dataset is highly imbalanced, with failures representing 3.39% of observations.",
+        "No missing values were found.",
+        "No duplicate rows were found.",
+        "UDI and Product ID are identifier columns.",
+        "Type is a categorical variable.",
+        "The five physical/process measurements are numerical candidate predictors.",
+        "Failure-mode indicators were investigated separately because they are directly related to failure information.",
+        "The combined failure-mode indicators do not exactly match the Machine failure target in all rows."
+    ]
+}

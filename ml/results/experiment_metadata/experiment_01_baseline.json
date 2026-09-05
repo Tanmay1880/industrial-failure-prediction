@@ -1,0 +1,77 @@
+{
+    "experiment_id": "experiment_01_baseline",
+    "timestamp": "2026-09-04T10:10:14.769956",
+    "dataset": {
+        "path": "D:\\Projects\\Web\\FullStack\\industrial-failure-prediction\\ml\\data\\raw\\ai4i2020.csv",
+        "rows": 10000,
+        "columns": 14
+    },
+    "features": [
+        "Type",
+        "Air temperature [K]",
+        "Process temperature [K]",
+        "Rotational speed [rpm]",
+        "Torque [Nm]",
+        "Tool wear [min]"
+    ],
+    "target": "Machine failure",
+    "split": {
+        "development_fraction": 0.8,
+        "final_test_fraction": 0.2,
+        "stratified": true,
+        "random_state": 42,
+        "development_rows": 8000,
+        "development_failures": 271,
+        "final_test_rows": 2000,
+        "final_test_failures": 68
+    },
+    "cross_validation": {
+        "method": "StratifiedKFold",
+        "n_splits": 5,
+        "shuffle": true,
+        "random_state": 42
+    },
+    "preprocessing": {
+        "numerical": "StandardScaler",
+        "categorical": "OneHotEncoder",
+        "pipeline": true,
+        "leakage_safe": true
+    },
+    "models": {
+        "Logistic Regression": {
+            "max_iter": 1000,
+            "random_state": 42
+        },
+        "Decision Tree": {
+            "random_state": 42
+        },
+        "Random Forest": {
+            "n_estimators": 100,
+            "random_state": 42
+        }
+    },
+    "baseline_threshold": 0.5,
+    "metrics": [
+        "recall",
+        "precision",
+        "f1",
+        "roc_auc",
+        "TN",
+        "FP",
+        "FN",
+        "TP"
+    ],
+    "software": {
+        "python": "3.14.2",
+        "pandas": "3.0.5",
+        "numpy": "2.5.2",
+        "scikit_learn": "1.9.0"
+    },
+    "observations": [
+        "Decision Tree achieved the highest mean recall and F1 at threshold 0.5.",
+        "Random Forest achieved the highest mean ROC-AUC and precision.",
+        "Logistic Regression achieved substantially lower recall at threshold 0.5.",
+        "Differences between default-threshold metrics and ROC-AUC motivate further threshold analysis."
+    ],
+    "decision": "No final model selected. Further experiments will investigate decision thresholds and asymmetric error costs."
+}

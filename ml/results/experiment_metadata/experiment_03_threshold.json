@@ -1,0 +1,66 @@
+{
+    "experiment_id": "experiment_03_threshold",
+    "timestamp": "2026-09-05T23:04:40.009999",
+    "purpose": "Evaluate the effect of decision thresholds on model performance using out-of-fold probability predictions.",
+    "input": {
+        "file": "D:\\Projects\\Web\\FullStack\\industrial-failure-prediction\\ml\\experiments\\experiment_02_probability\\oof_predictions.csv",
+        "rows": 8000,
+        "prediction_type": "out-of-fold probabilities"
+    },
+    "target": "actual_failure",
+    "models": [
+        "Logistic Regression",
+        "Decision Tree",
+        "Random Forest"
+    ],
+    "thresholds": [
+        0.05,
+        0.1,
+        0.15000000000000002,
+        0.2,
+        0.25,
+        0.3,
+        0.35000000000000003,
+        0.4,
+        0.45,
+        0.5,
+        0.55,
+        0.6000000000000001,
+        0.6500000000000001,
+        0.7000000000000001,
+        0.7500000000000001,
+        0.8,
+        0.8500000000000001,
+        0.9000000000000001,
+        0.9500000000000001
+    ],
+    "number_of_thresholds": 19,
+    "number_of_model_threshold_combinations": 57,
+    "evaluation_method": "Pooled evaluation over all 8,000 development-set OOF predictions.",
+    "metrics": [
+        "recall",
+        "precision",
+        "f1",
+        "far",
+        "TN",
+        "FP",
+        "FN",
+        "TP"
+    ],
+    "false_alarm_rate_definition": "FP / (FP + TN)",
+    "final_test_used": false,
+    "costs_used": false,
+    "outputs": {
+        "complete_results": "D:\\Projects\\Web\\FullStack\\industrial-failure-prediction\\ml\\experiments\\experiment_03_threshold\\threshold_results.csv",
+        "best_f1_thresholds": "D:\\Projects\\Web\\FullStack\\industrial-failure-prediction\\ml\\experiments\\experiment_03_threshold\\best_f1_thresholds.csv",
+        "threshold_0_50_comparison": "D:\\Projects\\Web\\FullStack\\industrial-failure-prediction\\ml\\experiments\\experiment_03_threshold\\threshold_0_50_comparison.csv"
+    },
+    "software": {
+        "python": "3.14.2",
+        "pandas": "3.0.5",
+        "numpy": "2.5.2",
+        "scikit_learn": "1.9.0"
+    },
+    "research_observation": "Changing the decision threshold changes the classification of observations and therefore changes the trade-off between failure detection and false alarms.",
+    "decision": "Use threshold results as the basis for minimum-recall and cost-based threshold selection in subsequent experiments."
+}

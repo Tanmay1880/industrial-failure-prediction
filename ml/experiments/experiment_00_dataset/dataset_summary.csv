@@ -1,0 +1,10 @@
+property,value
+n_rows,10000.0
+n_columns,14.0
+total_missing_values,0.0
+duplicate_rows,0.0
+normal_count,9661.0
+failure_count,339.0
+normal_percentage,96.61
+failure_percentage,3.39
+failure_mode_disagreements,27.0
