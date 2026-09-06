@@ -671,3 +671,89 @@ minimum failure-recall requirements and compare the resulting false
 alarms, precision, F1, FP, and FN.
 
 Do not use the final test set.
+
+## Experiment 4 — Minimum Recall Constraint
+
+### DATE
+2026-09-06
+
+### EXPERIMENT
+Minimum Recall Constraint Analysis
+
+### WHAT WE DID
+Used the out-of-fold (OOF) probability predictions generated in Experiment 2 to evaluate whether Logistic Regression, Decision Tree, and Random Forest could satisfy minimum recall requirements of 60%, 70%, 80%, 90%, and 95%.
+
+For each model, the previously evaluated threshold range of 0.05 to 0.95 was considered. For each minimum-recall scenario, only model/threshold combinations achieving recall greater than or equal to the required minimum were considered feasible.
+
+Among feasible combinations for each model and recall scenario, the threshold with the highest F1 score was selected for comparison. The final test set was not used.
+
+### WHY
+The research question considers model selection jointly with decision thresholds and minimum failure-detection requirements. This experiment evaluates how increasing the required failure-detection level affects the set of feasible model/threshold choices and their false-positive burden.
+
+### RESULT
+Minimum recall feasibility:
+
+| Minimum Recall | Logistic Regression | Decision Tree | Random Forest |
+|---:|:---:|:---:|:---:|
+| 60% | Feasible | Feasible | Feasible |
+| 70% | Feasible | Not feasible | Feasible |
+| 80% | Not feasible | Not feasible | Feasible |
+| 90% | Not feasible | Not feasible | Feasible |
+| 95% | Not feasible | Not feasible | Not feasible |
+
+Best feasible choices under the highest-F1-among-feasible-thresholds rule:
+
+- 60% minimum recall:
+  - Logistic Regression: threshold 0.10, recall 63.10%, precision 27.19%, F1 0.3800, FP 458, FN 100.
+  - Decision Tree: threshold 0.05, recall 67.16%, precision 70.27%, F1 0.6868, FP 77, FN 89.
+  - Random Forest: threshold 0.30, recall 74.17%, precision 73.36%, F1 0.7376, FP 73, FN 70.
+
+- 70% minimum recall:
+  - Logistic Regression: threshold 0.05, recall 73.06%, precision 16.98%, F1 0.2756, FP 968, FN 73.
+  - Decision Tree: no tested threshold satisfied the requirement.
+  - Random Forest: threshold 0.30, recall 74.17%, precision 73.36%, F1 0.7376, FP 73, FN 70.
+
+- 80% minimum recall:
+  - Logistic Regression: no tested threshold satisfied the requirement.
+  - Decision Tree: no tested threshold satisfied the requirement.
+  - Random Forest: threshold 0.20, recall 81.18%, precision 56.99%, F1 0.6697, FP 166, FN 51.
+
+- 90% minimum recall:
+  - Logistic Regression: no tested threshold satisfied the requirement.
+  - Decision Tree: no tested threshold satisfied the requirement.
+  - Random Forest: threshold 0.05, recall 91.88%, precision 26.63%, F1 0.4129, FP 686, FN 22.
+
+- 95% minimum recall:
+  - No tested model/threshold combination satisfied the requirement.
+
+### IMPORTANT NUMBERS
+Random Forest was the only model able to satisfy the 80% and 90% minimum-recall scenarios within the tested threshold range.
+
+For Random Forest, increasing the selected minimum recall from approximately 81.2% to 91.9% increased false positives from 166 to 686.
+
+At the 70% minimum-recall requirement, Random Forest achieved 74.17% recall with 73 false positives, while Logistic Regression required a threshold of 0.05 and produced 968 false positives.
+
+### OBSERVATION
+Increasing the minimum recall requirement progressively reduced the number of feasible model/threshold combinations.
+
+Random Forest demonstrated the greatest ability to satisfy stricter recall requirements within the tested threshold range. However, achieving very high recall resulted in a substantial increase in false positives.
+
+The results demonstrate that higher failure detection does not automatically imply a better operational choice because the false-positive burden also increases.
+
+The 95% result should be interpreted as "no tested model/threshold combination reached 95% recall" rather than evidence that the models can never achieve 95% recall, because only the predefined threshold range was evaluated.
+
+### DECISION
+Carry forward the feasible model/threshold combinations into the cost-sensitive analysis.
+
+Do not select the final model or threshold yet.
+
+### WHY
+The project requires model selection to consider failure detection, false alarms, and asymmetric consequences rather than relying on a single performance metric.
+
+### PAPER/LITERATURE CONNECTION
+This experiment supports the study's emphasis on operational decision-making under class imbalance. It demonstrates empirically that the classification threshold and minimum failure-detection requirement influence which models are practically feasible.
+
+The recall requirements used here (60%, 70%, 80%, 90%, and 95%) are experimental scenarios and are not presented as actual industrial requirements.
+
+### NEXT STEP
+Experiment 5 — Cost-Sensitive Analysis using explicit false-positive and false-negative cost scenarios.
