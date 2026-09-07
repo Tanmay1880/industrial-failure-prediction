@@ -1,0 +1,123 @@
+{
+  "experiment_id": "experiment_04_recall_constraint",
+  "date": "2026-09-07",
+  "experiment_name": "Minimum Recall Constraint Analysis",
+  "purpose": "Evaluate model and threshold feasibility under progressively stricter minimum recall requirements.",
+  "dataset": {
+    "name": "AI4I 2020 Predictive Maintenance Dataset",
+    "source": "UCI Machine Learning Repository",
+    "prediction_target": "Machine failure"
+  },
+  "prediction_source": {
+    "type": "out_of_fold_predictions",
+    "source_experiment": "experiment_02_probability",
+    "file": "experiments/experiment_02_probability/oof_predictions.csv",
+    "final_test_used": false
+  },
+  "models": [
+    "Logistic Regression",
+    "Decision Tree",
+    "Random Forest"
+  ],
+  "thresholds": {
+    "start": 0.05,
+    "end": 0.95,
+    "step": 0.05
+  },
+  "minimum_recall_constraints": [
+    0.60,
+    0.70,
+    0.80,
+    0.90,
+    0.95
+  ],
+  "selection_rule": {
+    "feasibility": "A model-threshold combination is feasible when recall is greater than or equal to the specified minimum recall requirement.",
+    "primary_selection_criterion": "Highest F1 among feasible thresholds for each model and recall scenario.",
+    "tie_breaker": "Higher recall"
+  },
+  "analysis": {
+    "evaluation_method": "Pooled out-of-fold predictions from the development set.",
+    "final_test_used": false,
+    "purpose": "Determine which models and thresholds can satisfy progressively stricter failure-detection requirements."
+  },
+  "key_findings": {
+    "60_percent": "All three models had at least one feasible tested threshold.",
+    "70_percent": "Logistic Regression and Random Forest had feasible thresholds; Decision Tree did not.",
+    "80_percent": "Only Random Forest had a feasible tested threshold.",
+    "90_percent": "Only Random Forest had a feasible tested threshold.",
+    "95_percent": "No tested model-threshold combination reached the minimum recall requirement."
+  },
+  "important_results": {
+    "60_percent": {
+      "logistic_regression": {
+        "threshold": 0.10,
+        "recall": 0.630996
+      },
+      "decision_tree": {
+        "threshold": 0.05,
+        "recall": 0.671587
+      },
+      "random_forest": {
+        "threshold": 0.30,
+        "recall": 0.741697
+      }
+    },
+    "70_percent": {
+      "logistic_regression": {
+        "threshold": 0.05,
+        "recall": 0.730627
+      },
+      "decision_tree": {
+        "feasible": false
+      },
+      "random_forest": {
+        "threshold": 0.30,
+        "recall": 0.741697
+      }
+    },
+    "80_percent": {
+      "logistic_regression": {
+        "feasible": false
+      },
+      "decision_tree": {
+        "feasible": false
+      },
+      "random_forest": {
+        "threshold": 0.20,
+        "recall": 0.811808
+      }
+    },
+    "90_percent": {
+      "logistic_regression": {
+        "feasible": false
+      },
+      "decision_tree": {
+        "feasible": false
+      },
+      "random_forest": {
+        "threshold": 0.05,
+        "recall": 0.918819
+      }
+    },
+    "95_percent": {
+      "logistic_regression": {
+        "feasible": false
+      },
+      "decision_tree": {
+        "feasible": false
+      },
+      "random_forest": {
+        "feasible": false
+      }
+    }
+  },
+  "observations": [
+    "Increasing the minimum recall requirement progressively reduced the number of feasible model-threshold combinations.",
+    "Random Forest remained feasible under the strictest recall requirements that were achievable in the tested threshold grid.",
+    "At a 90 percent minimum recall requirement, Random Forest required a threshold of 0.05 and produced substantially more false positives.",
+    "No evaluated model-threshold combination reached 95 percent recall."
+  ],
+  "research_decision": "Use minimum recall as an explicit constraint in subsequent cost-sensitive and final model-selection analysis.",
+  "next_experiment": "experiment_05_cost"
+}
