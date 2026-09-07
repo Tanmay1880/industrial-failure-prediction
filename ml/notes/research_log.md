@@ -757,3 +757,138 @@ The recall requirements used here (60%, 70%, 80%, 90%, and 95%) are experimental
 
 ### NEXT STEP
 Experiment 5 — Cost-Sensitive Analysis using explicit false-positive and false-negative cost scenarios.
+
+# Experiment 5 — Cost-Sensitive Analysis
+
+## DATE
+
+2026-09-07
+
+## EXPERIMENT
+
+Cost-sensitive threshold analysis with and without minimum recall constraints.
+
+## WHAT WE DID
+
+We evaluated Logistic Regression, Decision Tree, and Random Forest using the out-of-fold (OOF) probability predictions generated in Experiment 2.
+
+For each model, thresholds from 0.05 to 0.95 at increments of 0.05 were evaluated.
+
+Two analyses were performed.
+
+First, cost-sensitive analysis was performed without a minimum recall constraint using four illustrative relative-cost scenarios:
+
+- C1: FP cost = 1, FN cost = 1
+- C2: FP cost = 1, FN cost = 2
+- C3: FP cost = 1, FN cost = 5
+- C4: FP cost = 1, FN cost = 10
+
+Total cost was calculated as:
+
+Total Cost = (FP cost × FP) + (FN cost × FN)
+
+For each model and cost scenario, the threshold with the lowest total cost was selected. Higher recall was used as the tie-breaker.
+
+Second, the same cost analysis was performed under minimum recall constraints of 60%, 70%, 80%, 90%, and 95%.
+
+Only thresholds satisfying the required minimum recall were considered feasible. Among feasible thresholds, the threshold with the lowest total cost was selected, with higher recall used as the tie-breaker.
+
+The final test set was not used in this experiment.
+
+## WHY
+
+The purpose of this experiment was to investigate how asymmetric consequences of false positives and false negatives affect threshold selection and model preference.
+
+In predictive maintenance, the relative consequence of missing a failure may be greater than the consequence of generating a false alarm. Therefore, evaluating only conventional metrics such as F1 does not fully represent the decision problem.
+
+The minimum recall constraints were added to connect the cost analysis with the failure-detection requirements investigated in Experiment 4.
+
+## RESULT
+
+### Cost-only analysis
+
+Random Forest produced the lowest total cost among the three evaluated models in all four tested cost scenarios.
+
+| Cost Scenario | FP Cost | FN Cost | Model | Threshold | Recall | FP | FN | Total Cost |
+|---|---:|---:|---|---:|---:|---:|---:|---:|
+| C1 | 1 | 1 | Random Forest | 0.35 | 67.53% | 47 | 88 | 135 |
+| C2 | 1 | 2 | Random Forest | 0.30 | 74.17% | 73 | 70 | 213 |
+| C3 | 1 | 5 | Random Forest | 0.25 | 78.23% | 111 | 59 | 406 |
+| C4 | 1 | 10 | Random Forest | 0.15 | 84.87% | 255 | 41 | 665 |
+
+As the relative cost of a missed failure increased, the cost-optimal Random Forest threshold decreased from 0.35 to 0.15.
+
+### Cost + minimum recall analysis
+
+At a 60% minimum recall requirement, all three models had feasible choices. Random Forest produced the lowest cost for all four cost scenarios.
+
+At a 70% minimum recall requirement, Decision Tree became infeasible, while Random Forest remained feasible and produced the lowest cost among the feasible models.
+
+At an 80% minimum recall requirement, only Random Forest remained feasible.
+
+At a 90% minimum recall requirement, only Random Forest remained feasible.
+
+At a 95% minimum recall requirement, no tested model/threshold combination reached the required recall.
+
+For Random Forest:
+
+- At 80% minimum recall, threshold 0.20 achieved 81.18% recall with 166 FP and 51 FN under C1, giving total cost 217.
+- Under C4 at the same 80% minimum recall, threshold 0.15 was selected, achieving 84.87% recall with 255 FP and 41 FN, giving total cost 665.
+- At 90% minimum recall, threshold 0.05 achieved 91.88% recall with 686 FP and 22 FN.
+
+## IMPORTANT NUMBERS
+
+Random Forest cost-optimal thresholds:
+
+- C1 (1:1): 0.35
+- C2 (1:2): 0.30
+- C3 (1:5): 0.25
+- C4 (1:10): 0.15
+
+Random Forest recall increased from 67.53% to 84.87% as the FN cost increased from 1 to 10.
+
+At the 90% minimum recall requirement, Random Forest achieved 91.88% recall but generated 686 false positives.
+
+No tested model/threshold combination achieved 95% recall.
+
+## OBSERVATION
+
+Increasing the relative cost of false negatives caused the cost-optimal threshold to decrease for Random Forest. This increased recall and reduced the number of missed failures, but increased the number of false-positive alarms.
+
+The results demonstrate that there is no universally optimal threshold independent of the decision costs.
+
+Increasing the minimum recall requirement progressively reduced the number of feasible model-threshold combinations.
+
+Random Forest showed the greatest feasibility under the tested recall constraints and was the only model satisfying the 80% and 90% minimum recall requirements.
+
+The 95% requirement was not satisfied by any tested model-threshold combination.
+
+## DECISION
+
+Retain Random Forest as the strongest candidate for final model selection under the tested cost and minimum-recall scenarios.
+
+Do not freeze the final model or threshold yet.
+
+The final model and threshold will be selected in Experiment 6 using the evidence collected across the preceding experiments before evaluating the untouched final test set.
+
+## WHY
+
+The cost-sensitive analysis shows that model selection and threshold selection should be considered jointly with the operational objective.
+
+Random Forest consistently produced the lowest cost in the tested scenarios and remained feasible under stricter recall requirements.
+
+However, the final model and threshold should not be selected solely from Experiment 5 because the final decision must integrate the complete experimental evidence.
+
+## PAPER / LITERATURE CONNECTION
+
+This experiment demonstrates the practical importance of cost-sensitive decision-making in imbalanced binary classification.
+
+The results support the study's focus on the interaction between model choice, decision threshold, asymmetric FP/FN costs, and minimum recall requirements.
+
+The FP/FN costs used here are illustrative relative-cost scenarios rather than measured industrial monetary costs. Therefore, the results demonstrate sensitivity to cost assumptions rather than claiming specific real-world economic values.
+
+## NEXT STEP
+
+Perform Experiment 6 to formally select and freeze the final model and decision threshold using the experimental evidence collected so far.
+
+The final test set must remain untouched until the model and threshold have been frozen.

@@ -1,0 +1,80 @@
+{
+  "experiment_id": "experiment_05_cost",
+  "date": "2026-09-07",
+  "experiment_name": "Cost-Sensitive Analysis",
+  "purpose": "Evaluate how asymmetric false-positive and false-negative costs affect threshold selection and model choice, both without and with minimum recall constraints.",
+  "dataset": {
+    "name": "AI4I 2020 Predictive Maintenance Dataset",
+    "source": "UCI Machine Learning Repository",
+    "prediction_target": "Machine failure"
+  },
+  "prediction_source": {
+    "type": "out_of_fold_predictions",
+    "source_experiment": "experiment_02_probability",
+    "file": "experiments/experiment_02_probability/oof_predictions.csv",
+    "final_test_used": false
+  },
+  "models": [
+    "Logistic Regression",
+    "Decision Tree",
+    "Random Forest"
+  ],
+  "thresholds": {
+    "start": 0.05,
+    "end": 0.95,
+    "step": 0.05
+  },
+  "cost_scenarios": {
+    "C1": {
+      "false_positive_cost": 1,
+      "false_negative_cost": 1
+    },
+    "C2": {
+      "false_positive_cost": 1,
+      "false_negative_cost": 2
+    },
+    "C3": {
+      "false_positive_cost": 1,
+      "false_negative_cost": 5
+    },
+    "C4": {
+      "false_positive_cost": 1,
+      "false_negative_cost": 10
+    }
+  },
+  "minimum_recall_constraints": [
+    0.60,
+    0.70,
+    0.80,
+    0.90,
+    0.95
+  ],
+  "cost_function": "Total Cost = (FP cost × FP) + (FN cost × FN)",
+  "selection_rule": {
+    "primary": "Lowest total cost",
+    "tie_breaker": "Higher recall"
+  },
+  "analysis": {
+    "part_1": "Cost-sensitive threshold selection without a minimum recall constraint.",
+    "part_2": "Cost-sensitive threshold selection subject to minimum recall constraints."
+  },
+  "key_findings": {
+    "cost_only": "Random Forest produced the lowest total cost among the evaluated models in all four tested cost scenarios.",
+    "threshold_behavior": "For Random Forest, the cost-optimal threshold decreased from 0.35 to 0.15 as the relative false-negative cost increased from 1 to 10.",
+    "recall_constraints": "At minimum recall requirements of 80% and 90%, Random Forest was the only model with a feasible tested threshold.",
+    "highest_tested_constraint": "No evaluated model-threshold combination reached the 95% minimum recall requirement."
+  },
+  "important_observations": [
+    "Increasing the relative cost of false negatives generally favored lower decision thresholds.",
+    "Lower thresholds increased recall and reduced false negatives but increased false positives.",
+    "Increasing the minimum recall requirement reduced the number of feasible model-threshold combinations.",
+    "The cost scenarios are illustrative relative-cost scenarios and are not claimed to represent measured industrial monetary costs."
+  ],
+  "output_files": [
+    "experiments/experiment_05_cost/cost_results.csv",
+    "experiments/experiment_05_cost/best_cost_choices.csv",
+    "experiments/experiment_05_cost/best_cost_choices_with_recall.csv"
+  ],
+  "research_decision": "Retain Random Forest as the strongest candidate for final model selection under the tested cost and minimum-recall scenarios. Final model and threshold selection is deferred to Experiment 6.",
+  "next_experiment": "experiment_06_final_model_selection"
+}
