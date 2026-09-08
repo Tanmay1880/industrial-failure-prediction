@@ -892,3 +892,108 @@ The FP/FN costs used here are illustrative relative-cost scenarios rather than m
 Perform Experiment 6 to formally select and freeze the final model and decision threshold using the experimental evidence collected so far.
 
 The final test set must remain untouched until the model and threshold have been frozen.
+
+# Experiment 6 — Final Model and Operating-Point Selection
+
+## DATE
+
+2026-09-08
+
+## EXPERIMENT
+
+Final model and operating-point selection.
+
+## WHAT WE DID
+
+We performed the final model-selection analysis using the out-of-fold development-set predictions generated in the previous experiments.
+
+We defined an operating policy consisting of:
+
+- Minimum recall requirement: 80%
+- False-positive cost: 1
+- False-negative cost: 5
+- Thresholds evaluated: 0.05 to 0.95 in increments of 0.05
+
+Configurations with recall below 80% were first rejected.
+
+For the remaining feasible configurations, total cost was calculated as:
+
+Total Cost = FP × 1 + FN × 5
+
+The configuration with the lowest total cost was selected. In case of a cost tie, higher recall was preferred.
+
+The final test set was not used.
+
+## WHY
+
+The purpose was to convert the results of the previous threshold, recall-constraint, and cost-sensitive experiments into an explicit model-selection decision.
+
+This follows the research question by treating minimum failure detection as a constraint and asymmetric error cost as the optimization objective.
+
+## RESULT
+
+16 model/threshold configurations satisfied the 80% minimum-recall requirement.
+
+The selected configuration was:
+
+| Model | Threshold | Recall | Precision | F1 | FP | FN | Total Cost |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| Random Forest | 0.20 | 0.8118 | 0.5699 | 0.6697 | 166 | 51 | 421 |
+
+Cost calculation:
+
+166 × 1 + 51 × 5 = 421
+
+## IMPORTANT NUMBERS
+
+Minimum recall: 80%
+
+FP cost: 1
+
+FN cost: 5
+
+Selected model: Random Forest
+
+Selected threshold: 0.20
+
+Recall: 81.18%
+
+Precision: 56.99%
+
+F1: 66.97%
+
+False positives: 166
+
+False negatives: 51
+
+Total cost: 421
+
+## OBSERVATION
+
+Under the selected operating policy, Random Forest was the lowest-cost feasible configuration among the evaluated models and thresholds.
+
+The minimum-recall constraint was important because it eliminated Logistic Regression and Decision Tree configurations that could not reach the required 80% recall within the evaluated threshold range.
+
+## DECISION
+
+Freeze Random Forest with a decision threshold of 0.20 for the final test evaluation.
+
+No further threshold or model tuning will be performed using the final test set.
+
+## WHY
+
+The model and threshold were selected using only development-set out-of-fold predictions.
+
+Keeping the final test set untouched preserves its role as an independent final evaluation set.
+
+## PAPER/LITERATURE_CONNECTION
+
+This experiment operationalizes the study's intended controlled analysis of model choice, decision threshold, asymmetric FP/FN costs, and minimum failure-detection requirements.
+
+The selected cost ratio is an illustrative relative-cost scenario rather than an observed industrial monetary cost and will be reported as such.
+
+The result should therefore be interpreted as an empirical finding for the selected dataset and experimental policy rather than a universally optimal model or threshold.
+
+## NEXT STEP
+
+Experiment 7 — Final evaluation on the untouched 20% final test set.

@@ -1,0 +1,54 @@
+{
+  "experiment_id": "experiment_06_final_selection",
+  "date": "2026-09-08",
+  "name": "Final Model and Operating-Point Selection",
+  "purpose": "Select and freeze the model and decision threshold for final evaluation using a minimum-recall constraint and an illustrative asymmetric cost policy.",
+  "dataset": {
+    "name": "AI4I 2020 Predictive Maintenance Dataset",
+    "source": "UCI Machine Learning Repository"
+  },
+  "input": {
+    "source_experiment": "experiment_05_cost",
+    "file": "experiments/experiment_05_cost/cost_results.csv",
+    "final_test_used": false
+  },
+  "models": [
+    "Logistic Regression",
+    "Decision Tree",
+    "Random Forest"
+  ],
+  "threshold_grid": {
+    "start": 0.05,
+    "end": 0.95,
+    "step": 0.05
+  },
+  "operating_policy": {
+    "minimum_recall": 0.80,
+    "false_positive_cost": 1,
+    "false_negative_cost": 5,
+    "cost_scenario": "C3",
+    "cost_interpretation": "Illustrative relative cost scenario; not an observed industrial monetary cost."
+  },
+  "selection_rule": {
+    "step_1": "Reject configurations with recall below 0.80.",
+    "step_2": "Among feasible configurations, calculate total cost as FP * 1 + FN * 5.",
+    "step_3": "Select the configuration with the lowest total cost.",
+    "tie_breaker": "If total cost is tied, prefer higher recall."
+  },
+  "result": {
+    "feasible_configurations": 16,
+    "selected_model": "Random Forest",
+    "selected_threshold": 0.20,
+    "recall": 0.811808,
+    "precision": 0.569948,
+    "f1": 0.669711,
+    "false_positives": 166,
+    "false_negatives": 51,
+    "total_cost": 421
+  },
+  "cost_calculation": "166 * 1 + 51 * 5 = 421",
+  "research_observation": "Under the selected illustrative operating policy, Random Forest was the lowest-cost feasible configuration among the evaluated models and thresholds.",
+  "research_decision": "Freeze Random Forest with a decision threshold of 0.20 for final test evaluation.",
+  "important_caution": "The selected threshold and cost policy are specific to this experimental setup and should not be interpreted as universally optimal or as actual industrial cost values.",
+  "next_experiment": "experiment_07_final_test"
+}
