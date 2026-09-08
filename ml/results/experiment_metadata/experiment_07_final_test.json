@@ -1,0 +1,56 @@
+{
+  "experiment_id": "experiment_07_final_test",
+  "date": "2026-09-08",
+  "name": "Final Test Evaluation",
+  "purpose": "Evaluate the frozen model and decision threshold once on the untouched final test set.",
+  "dataset": {
+    "name": "AI4I 2020 Predictive Maintenance Dataset",
+    "source": "UCI Machine Learning Repository"
+  },
+  "selection_source": {
+    "experiment": "experiment_06_model_selection",
+    "model": "Random Forest",
+    "threshold": 0.20,
+    "minimum_recall": 0.80,
+    "fp_cost": 1,
+    "fn_cost": 5
+  },
+  "training": {
+    "development_rows": 8000,
+    "final_test_rows": 2000,
+    "training_data": "All 8000 development observations",
+    "final_test_used_for_training": false,
+    "random_state": 42
+  },
+  "result": {
+    "actual_failures": 68,
+    "actual_normal": 1932,
+    "true_negatives": 1889,
+    "false_positives": 43,
+    "false_negatives": 12,
+    "true_positives": 56,
+    "recall": 0.823529,
+    "precision": 0.565657,
+    "f1": 0.670659,
+    "false_alarm_rate": 0.022257,
+    "roc_auc": 0.9653,
+    "total_cost": 103
+  },
+  "cost_calculation": "43 * 1 + 12 * 5 = 103",
+  "research_observation": "The frozen Random Forest configuration satisfied the 80% minimum-recall requirement on the untouched final test set, achieving 82.35% recall.",
+  "comparison_with_selection_stage": {
+    "development_oof_recall": 0.811808,
+    "final_test_recall": 0.823529,
+    "development_oof_precision": 0.569948,
+    "final_test_precision": 0.565657,
+    "development_oof_f1": 0.669711,
+    "final_test_f1": 0.670659
+  },
+  "research_decision": "No further model or threshold tuning will be performed using the final test set.",
+  "limitations": [
+    "The AI4I dataset is synthetic.",
+    "The FP/FN cost ratio is an illustrative experimental assumption rather than an observed industrial monetary cost.",
+    "The results are specific to the selected dataset, features, models, preprocessing, split, and experimental policy."
+  ],
+  "next_step": "Consolidate Experiments 0-7 into the overall results, discussion, and research conclusions."
+}

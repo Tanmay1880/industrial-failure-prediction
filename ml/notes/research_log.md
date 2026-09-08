@@ -997,3 +997,123 @@ The result should therefore be interpreted as an empirical finding for the selec
 ## NEXT STEP
 
 Experiment 7 — Final evaluation on the untouched 20% final test set.
+
+# Experiment 7 — Final Test Evaluation
+
+## DATE
+
+2026-09-08
+
+## EXPERIMENT
+
+Final evaluation of the frozen model and decision threshold on the untouched 20% final test set.
+
+## WHAT WE DID
+
+The model and operating point selected in Experiment 6 were frozen before evaluating the final test set.
+
+The final Random Forest was trained using all 8,000 observations in the development set.
+
+The preprocessing pipeline used during the previous experiments was retained.
+
+The trained model generated failure probabilities for the 2,000 observations in the final test set.
+
+The frozen decision threshold of 0.20 was then applied to convert probabilities into failure/normal predictions.
+
+No model, threshold, or cost policy was changed using final-test results.
+
+## WHY
+
+The purpose was to obtain an unbiased final evaluation of the configuration selected using development-set out-of-fold predictions.
+
+The final test set had remained untouched throughout model selection and threshold selection.
+
+## RESULT
+
+The final test set contained:
+
+- 2,000 observations
+- 1,932 normal observations
+- 68 failure observations
+
+The frozen Random Forest achieved:
+
+| Metric | Final Test |
+|---|---:|
+| Recall | 82.35% |
+| Precision | 56.57% |
+| F1 | 67.07% |
+| False Alarm Rate | 2.23% |
+| ROC-AUC | 96.53% |
+| True Negatives | 1,889 |
+| False Positives | 43 |
+| False Negatives | 12 |
+| True Positives | 56 |
+| Total Cost | 103 |
+
+Under the illustrative C3 cost policy:
+
+43 × 1 + 12 × 5 = 103
+
+## IMPORTANT NUMBERS
+
+Selected model: Random Forest
+
+Selected threshold: 0.20
+
+Minimum recall requirement: 80%
+
+Final test recall: 82.35%
+
+Final test precision: 56.57%
+
+Final test F1: 67.07%
+
+Final test ROC-AUC: 96.53%
+
+False positives: 43
+
+False negatives: 12
+
+Total cost: 103
+
+## OBSERVATION
+
+The final test recall of 82.35% exceeded the predefined 80% minimum-recall requirement.
+
+The final-test recall, precision, and F1 were close to the corresponding development-set OOF values from Experiment 6:
+
+- Development OOF recall: 81.18%
+- Final test recall: 82.35%
+- Development OOF precision: 56.99%
+- Final test precision: 56.57%
+- Development OOF F1: 66.97%
+- Final test F1: 67.07%
+
+This indicates that the selected configuration maintained similar performance on the untouched final test set.
+
+## DECISION
+
+Accept the frozen Random Forest with threshold 0.20 as the final experimental model configuration.
+
+Do not perform additional model or threshold tuning using the final test set.
+
+## WHY
+
+The final test set was reserved exclusively for final evaluation, preserving the separation between model selection and final performance assessment.
+
+## PAPER/LITERATURE_CONNECTION
+
+The result provides the final empirical evaluation for the study's controlled analysis of model selection, decision thresholds, asymmetric FP/FN costs, and minimum failure-detection requirements.
+
+The result should be interpreted as evidence for the selected experimental setup rather than as a claim that Random Forest with threshold 0.20 is universally optimal for industrial predictive maintenance.
+
+The AI4I dataset is synthetic, and the selected cost ratio is illustrative rather than an observed industrial cost structure.
+
+## NEXT STEP
+
+Consolidate Experiments 0–7 into the overall results and discussion.
+
+Compare the baseline, threshold analysis, recall constraints, cost-sensitive analysis, final selection, and final test results.
+
+Identify the actual research findings, limitations, and defensible contribution.

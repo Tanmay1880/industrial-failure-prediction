@@ -1,0 +1,2 @@
+model,threshold,test_rows,actual_failures,actual_normal,true_negatives,false_positives,false_negatives,true_positives,recall,precision,f1,false_alarm_rate,roc_auc,fp_cost,fn_cost,total_cost
+Random Forest,0.2,2000,68,1932,1889,43,12,56,0.8235294117647058,0.5656565656565656,0.6706586826347305,0.022256728778467908,0.9652828522713434,1,5,103
