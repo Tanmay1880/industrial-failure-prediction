@@ -78,6 +78,12 @@ best = feasible.sort_values(
     ascending=[True, False]
 ).iloc[0]
 
+# Record the cost policy actually used for Experiment 6.
+# The selected row comes from Experiment 5, so its original
+# cost-scenario metadata may refer to a different scenario.
+best["cost_scenario"] = "C3"
+best["fp_cost"] = FP_COST
+best["fn_cost"] = FN_COST
 
 final_selection = pd.DataFrame([best])
 
